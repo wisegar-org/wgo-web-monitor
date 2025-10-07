@@ -1,19 +1,19 @@
 @echo off
-echo Uninstalling Website Monitor Service...
+echo Desinstalando Website Monitor Service...
 echo.
 
-REM Stop the service if it is running
-echo Stopping the service...
+REM Detener el servicio si está ejecutándose
+echo Deteniendo el servicio...
 sc.exe stop "Website Monitor"
 
-REM Delete the service
-echo Deleting the service...
+REM Eliminar el servicio
+echo Eliminando el servicio...
 sc.exe delete "Website Monitor"
 
 if %ERRORLEVEL% EQU 0 (
-    echo ✓ Service deleted successfully
+    echo ✓ Servicio eliminado exitosamente
 ) else (
-    echo ✗ Error deleting the service or the service did not exist
+    echo ✗ Error al eliminar el servicio o el servicio no existía
 )
 
 echo.
