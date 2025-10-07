@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <Authors>Yariel Rodriguez - @yarielre </Authors>
+    <Description>Secure document management platform aligned with Swiss DSG/LPD</Description>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WebsiteMonitorService-696c70d8-b7d0-4bd6-bdd5-17e6a88d781c</UserSecretsId>  
+    <AssemblyName>Wisegar.Monitor</AssemblyName>
+     <!-- Target framework -->
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Output type: Exe or Library -->
+    <OutputType>Exe</OutputType>
+    <!-- Enable nullable reference types -->
+    <Nullable>enable</Nullable>
+    <!-- Treat warnings as errors -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Enable deterministic builds -->
+    <Deterministic>true</Deterministic>
+    <!-- Enable trimming for publish -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <!-- Self-contained publish -->
+    <SelfContained>true</SelfContained>
+    <!-- Publish as a single file -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- Optional: Compress the single file -->
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <!-- Runtime identifier -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- Output path -->
+    <OutputPath>publish\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Wisegar.Toolkit.Services" Version="1.0.0" />
+  </ItemGroup>
+</Project>
