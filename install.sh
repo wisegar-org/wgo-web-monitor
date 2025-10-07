@@ -1,5 +1,29 @@
 ﻿@echo off
 
+:: === DOWNLOAD SERVICE RELEASE ===
+# Clone the latest published release from GitHub
+REPO_URL="https://github.com/wisegar-org/wgo-web-monitor.git"
+RELEASE_API="https://api.github.com/repos/wisegar-org/wgo-web-monitor/releases/latest"
+TMP_DIR="/tmp/wgo-web-monitor-release"
+
+# Clean up any previous temp directory
+rm -rf "$TMP_DIR"
+mkdir -p "$TMP_DIR"
+
+# Get the latest release tarball URL
+TARBALL_URL=$(curl -s $RELEASE_API | grep "tarball_url" | cut -d '"' -f 4)
+
+# Download and extract the latest release
+curl -L "$TARBALL_URL" -o "$TMP_DIR/release.tar.gz"
+mkdir -p "$EXEC_PATH"
+tar -xzf "$TMP_DIR/release.tar.gz" --strip-components=1 -C "$EXEC_PATH"
+
+# Move extracted files to /opt/wisegar/monitor
+mkdir -p /opt/wisegar/monitor
+mv "$EXEC_PATH"/* /opt/wisegar/monitor/
+
+echo "Downloaded and extracted the latest release to $EXEC_PATH"
+
 :: === CONFIGURATION ===
 set SERVICE_NAME=WisegarMonitor
 set SERVICE_DESCRIPTION=Wisegar Monitor Service
