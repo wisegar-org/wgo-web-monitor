@@ -13,7 +13,6 @@ Main files:
 - `WebsiteMonitorConfig.cs` — configuration for URLs and intervals
 - `EmailSettings.cs`, `EmailService.cs` — email settings and sending logic
 - `appsettings.json` — application configuration (sites, email)
-- `install-service.bat` / `uninstall-service.bat` — scripts to create/remove the Windows service
 
 ## Prerequisites
 
@@ -76,12 +75,18 @@ After publishing, files are available in the `publish\` folder (including the ex
 
 ## Install as a Windows Service
 
-You can use the provided `install-service.bat` script (edit the executable path inside if necessary).
+This repository provides a PowerShell installer script to create the Windows service. Legacy batch installers and any `scripts/` uninstall batch have been removed. Before running the installer, open the script and verify the `$servicePath` value points to the correct executable in your `publish\` folder.
 
-Example (run PowerShell as Administrator):
+Installer script:
+
+- `install-service.ps1` — PowerShell installer (root). Recommended: performs elevation checks and prints clearer output.
+
+Quick examples (run from an elevated PowerShell prompt):
+
+Using `sc.exe` manually:
 
 ```powershell
-# Example to create the service using sc.exe
+# Create and start the service using sc.exe
 sc.exe create "Website Monitor" binPath= "C:\full\path\to\publish\WebsiteMonitorService.exe" DisplayName= "Website Monitor Service"
 sc.exe start "Website Monitor"
 
@@ -90,7 +95,21 @@ sc.exe stop "Website Monitor"
 sc.exe delete "Website Monitor"
 ```
 
-If you use `install-service.bat`, open and verify the `binPath` before running.
+Using the PowerShell installer (recommended):
+
+```powershell
+# From an elevated PowerShell prompt in the repo root
+# If your execution policy blocks scripts, run with ExecutionPolicy Bypass:
+powershell -ExecutionPolicy Bypass -File .\install-service.ps1
+# Or run interactively after setting execution policy for the session:
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; .\install-service.ps1
+```
+
+Notes:
+
+- Always verify the `$servicePath` inside the script points to your published executable.
+- Run the PowerShell installer as Administrator — the script checks for elevation and will prompt if not elevated.
+- To uninstall the service you can run the `sc.exe stop` and `sc.exe delete` commands shown above.
 
 ## Logs
 
