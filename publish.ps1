@@ -1,5 +1,6 @@
 # Define the publish folder path
 $publishPath = "./publish/"
+$projectPath = "./Wisegar.Monitor.csproj"
 
 Write-Host "Publishing to $publishPath..."
 
@@ -7,7 +8,7 @@ Write-Host "Publishing to $publishPath..."
 Remove-Item -Path $publishPath -Recurse -Force -ErrorAction SilentlyContinue
 
 # Build the project in Release mode
-dotnet build "./Wisegar.Monitor.csproj" -c Release
+dotnet build $projectPath -c Release
 
 # Publish as a self-contained app for Windows x64
-dotnet publish "./Wisegar.Monitor.csproj" -c Release -r win-x64 --self-contained true -o $publishPath
+dotnet publish $projectPath -c Release -r win-x64 --self-contained true -o $publishPath
