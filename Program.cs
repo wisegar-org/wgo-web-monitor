@@ -1,17 +1,25 @@
-using WebsiteMonitorService;
+using Wisegar.Monitor.Services;
+using Wisegar.Monitor.Settings;
 using Wisegar.Toolkit.Services.Email;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-// Configure the service for Windows
-builder.Services.AddWindowsService(options =>
+if (OperatingSystem.IsWindows())
 {
-    options.ServiceName = "Website Monitor Service";
-});
+    builder.Services.AddWindowsService(options =>
+    {
+        options.ServiceName = "Website Monitor Service";
+    });
+}
+
+if (OperatingSystem.IsLinux())
+{
+    builder.Services.AddSystemd();
+}
 
 // Configure application settings
-builder.Services.Configure<WebsiteMonitorConfig>(
-    builder.Configuration.GetSection(WebsiteMonitorConfig.SectionName));
+builder.Services.Configure<MonitorSettings>(
+    builder.Configuration.GetSection(MonitorSettings.SectionName));
 
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection(EmailSettings.SectionName));
@@ -23,7 +31,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IEmailService, EmailSmtpService>();
 
 // Register the background worker
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<MonitorServiceWorker>();
 
 var host = builder.Build();
+
 host.Run();

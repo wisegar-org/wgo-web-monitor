@@ -1,16 +1,17 @@
 using Microsoft.Extensions.Options;
+using Wisegar.Monitor.Settings;
 using Wisegar.Toolkit.Services.Email;
 
-namespace WebsiteMonitorService;
+namespace Wisegar.Monitor.Services;
 
-public class Worker : BackgroundService
+public class MonitorServiceWorker : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
-    private readonly WebsiteMonitorConfig _config;
+    private readonly ILogger<MonitorServiceWorker> _logger;
+    private readonly MonitorSettings _config;
     private readonly HttpClient _httpClient;
     private readonly IServiceProvider _serviceProvider;
 
-    public Worker(ILogger<Worker> logger, IOptions<WebsiteMonitorConfig> config, HttpClient httpClient, IServiceProvider serviceProvider)
+    public MonitorServiceWorker(ILogger<MonitorServiceWorker> logger, IOptions<MonitorSettings> config, HttpClient httpClient, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _config = config.Value;
