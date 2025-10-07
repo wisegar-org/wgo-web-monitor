@@ -3,6 +3,7 @@
 :: === DOWNLOAD SERVICE RELEASE ===
 # Get the latest release tarball URL
 TARBALL_URL=$(curl -s https://api.github.com/repos/wisegar-org/wgo-web-monitor/releases/latest | grep "tarball_url" | cut -d '"' -f 4)
+echo Latest release tarball URL: $TARBALL_URL
 
 # Download and extract the latest release
 curl -L "$TARBALL_URL" -o "./release.tar.gz"
