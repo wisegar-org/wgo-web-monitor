@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-WebsiteMonitorService-696c70d8-b7d0-4bd6-bdd5-17e6a88d781c</UserSecretsId>  
     <AssemblyName>Wisegar.Monitor</AssemblyName>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <Company>Wissegar Development Team</Company>
      <!-- Target framework -->
     <TargetFramework>net8.0</TargetFramework>
     <!-- Output type: Exe or Library -->
