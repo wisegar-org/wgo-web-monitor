@@ -146,4 +146,12 @@ If you need help with configuration or want me to update the main project `READM
 
 Useful files in the repository: `Program.cs`, `Worker.cs`, `appsettings.json`, `install-service.bat`, `uninstall-service.bat`.
 
-End of English documentation.
+## Maintainers
+
+This project is actively maintained by the following contributors:
+
+| Name              | Role                        | GitHub Handle     | Responsibilities                          |
+|-------------------|-----------------------------|-------------------|-------------------------------------------|
+| Yariel Rodriguez       | Lead Architect & Maintainer | [@yarielre](https://github.com/yarielre) | Platform architecture, development, maintainer|
+
+> For questions, contributions, or partnership inquiries, please contact the lead maintainer via GitHub or Email to [Info](info@wisegar.org)  
