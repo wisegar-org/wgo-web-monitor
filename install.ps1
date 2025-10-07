@@ -1,6 +1,6 @@
-$serviceName = "DocVaultService"
-$serviceDisplayName = "DocVault Document Service"
-$serviceDescription = "Secure document management platform aligned with Swiss DSG/LPD"
+$serviceName = "Wisegar.Monitor"
+$serviceDisplayName = "Wisegar Monitor Service"
+$serviceDescription = "Service that monitors websites and sends alert emails"
 $exePath = ".\publish\Wisegar.Monitor.exe"
 
 # Check for admin privileges
