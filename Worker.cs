@@ -21,7 +21,7 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Website Monitor Service started. Monitoring {count} websites every {interval} minutes.", 
+        _logger.LogInformation("Website Monitor Service started. Monitoring {count} websites every {interval} minutes.",
             _config.Websites.Count, _config.CheckIntervalMinutes);
 
         // Send complex test email at startup
@@ -45,21 +45,21 @@ public class Worker : BackgroundService
     private async Task CheckWebsite(string url)
     {
         var timestamp = DateTime.Now;
-        
+
         try
         {
             var response = await _httpClient.GetAsync(url);
             var statusCode = (int)response.StatusCode;
             var isOnline = response.IsSuccessStatusCode;
-            
+
             var status = isOnline ? "ONLINE" : "OFFLINE";
-            
-            _logger.LogInformation("Sitio: {url} | Status Code: {statusCode} | Status: {status} | Hour: {timestamp:yyyy-MM-dd HH:mm:ss}",
+
+            _logger.LogInformation("Site: {url} | Status Code: {statusCode} | Status: {status} | Time: {timestamp:yyyy-MM-dd HH:mm:ss}",
                 url, statusCode, status, timestamp);
-                
+
             // Write to the specific log file
             await WriteToLogFile(url, statusCode, status, timestamp);
-            
+
             // If it is not status 200, send error email
             if (statusCode != 200)
             {
@@ -76,7 +76,7 @@ public class Worker : BackgroundService
         {
             _logger.LogError("Error connecting to {url}: {error} | Hour: {timestamp:yyyy-MM-dd HH:mm:ss}",
                 url, ex.Message, timestamp);
-                
+
             await WriteToLogFile(url, 0, "ERROR", timestamp, ex.Message);
             await SendErrorEmail(url, 0, "ERROR", ex.Message);
         }
@@ -84,7 +84,7 @@ public class Worker : BackgroundService
         {
             _logger.LogWarning("Timeout when connecting with {url} | Hour: {timestamp:yyyy-MM-dd HH:mm:ss}",
                 url, timestamp);
-                
+
             await WriteToLogFile(url, 0, "TIMEOUT", timestamp, "Request timeout");
             await SendErrorEmail(url, 0, "TIMEOUT", "Request timeout");
         }
@@ -92,7 +92,7 @@ public class Worker : BackgroundService
         {
             _logger.LogError(ex, "Unexpected error while checking {url} | Hour: {timestamp:yyyy-MM-dd HH:mm:ss}",
                 url, timestamp);
-                
+
             await WriteToLogFile(url, 0, "ERROR", timestamp, ex.Message);
             await SendErrorEmail(url, 0, "ERROR", ex.Message);
         }
@@ -104,14 +104,14 @@ public class Worker : BackgroundService
         {
             var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
             Directory.CreateDirectory(logDirectory);
-            
+
             var logFileName = $"website-monitor-{timestamp:yyyy-MM-dd}.log";
             var logFilePath = Path.Combine(logDirectory, logFileName);
-            
-            var logEntry = errorMessage != null 
+
+            var logEntry = errorMessage != null
                 ? $"{timestamp:yyyy-MM-dd HH:mm:ss} | {url} | Status Code: {statusCode} | Status: {status} | Error: {errorMessage}{Environment.NewLine}"
                 : $"{timestamp:yyyy-MM-dd HH:mm:ss} | {url} | Status Code: {statusCode} | Status: {status}{Environment.NewLine}";
-            
+
             await File.AppendAllTextAsync(logFilePath, logEntry);
         }
         catch (Exception ex)
@@ -140,10 +140,10 @@ public class Worker : BackgroundService
         {
             using var scope = _serviceProvider.CreateScope();
             var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-            
+
             // Test simple email
             await emailService.SendEmailAsync(
-                to: "hurshelann30@gmail.com",
+                to: "yariel.re@gmail.com",
                 subject: "✅ SUCCESS: Website Working Correctly",
                 body: $@"
                 <html>
@@ -177,7 +177,7 @@ public class Worker : BackgroundService
         {
             using var scope = _serviceProvider.CreateScope();
             var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-            
+
             // Create a complex test email
             var emailMessage = new EmailMessage
             {

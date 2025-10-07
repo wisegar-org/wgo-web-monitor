@@ -3,26 +3,26 @@ using Wisegar.Toolkit.Services.Email;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-// Configurar el servicio para Windows
+// Configure the service for Windows
 builder.Services.AddWindowsService(options =>
 {
     options.ServiceName = "Website Monitor Service";
 });
 
-// Configurar la configuración
+// Configure application settings
 builder.Services.Configure<WebsiteMonitorConfig>(
     builder.Configuration.GetSection(WebsiteMonitorConfig.SectionName));
 
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection(EmailSettings.SectionName));
 
-// Agregar HttpClient
+// Add HttpClient
 builder.Services.AddHttpClient();
 
-// Agregar el servicio de email
+// Register the email service
 builder.Services.AddScoped<IEmailService, EmailSmtpService>();
 
-// Agregar el worker
+// Register the background worker
 builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
