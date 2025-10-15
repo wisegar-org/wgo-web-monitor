@@ -8,13 +8,15 @@ public class MonitorServiceWorker : BackgroundService
 {
     private readonly ILogger<MonitorServiceWorker> _logger;
     private readonly MonitorSettings _config;
+    private readonly EmailSettings _emailConfig;   
     private readonly HttpClient _httpClient;
     private readonly IServiceProvider _serviceProvider;
 
-    public MonitorServiceWorker(ILogger<MonitorServiceWorker> logger, IOptions<MonitorSettings> config, HttpClient httpClient, IServiceProvider serviceProvider)
+    public MonitorServiceWorker(ILogger<MonitorServiceWorker> logger, IOptions<MonitorSettings> config, IOptions<EmailSettings> emailConfig, HttpClient httpClient, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _config = config.Value;
+        _emailConfig = emailConfig.Value;
         _httpClient = httpClient;
         _serviceProvider = serviceProvider;
         _httpClient.Timeout = TimeSpan.FromSeconds(_config.TimeoutSeconds);
@@ -141,10 +143,9 @@ public class MonitorServiceWorker : BackgroundService
         {
             using var scope = _serviceProvider.CreateScope();
             var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-
             // Test simple email
             await emailService.SendEmailAsync(
-                to: "yariel.re@gmail.com",
+                to: [.. _emailConfig.ToEmails],
                 subject: "✅ SUCCESS: Website Working Correctly",
                 body: $@"
                 <html>
@@ -178,11 +179,10 @@ public class MonitorServiceWorker : BackgroundService
         {
             using var scope = _serviceProvider.CreateScope();
             var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-
             // Create a complex test email
             var emailMessage = new EmailMessage
             {
-                To = new List<string> { "hurshelann30@gmail.com" },
+                To = _emailConfig.ToEmails,
                 Subject = "🧪 Complex Email Test - Monitor Service",
                 Body = @"
                 <html>
