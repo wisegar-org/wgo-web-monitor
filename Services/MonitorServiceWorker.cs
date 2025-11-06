@@ -39,6 +39,11 @@ public class MonitorServiceWorker : BackgroundService
 
     private async Task CheckWebsites()
     {
+
+        //TODO: Verificar cada sitio.
+        // Si todos ok. Enviar 1 solo email Successfull con al interno la lista de paginas ok.
+        // Si al menos 1 tiene problemas. Enviar 1 mensage de error con la lista de paginas con los que estan ok y el/los que tienen problemas¨.
+
         foreach (var website in _config.Websites)
         {
             await CheckWebsite(website);
